@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- templates/form.html -->
+
+<form method="POST" action="/submit">
+
+    <label>First Name:</label>
+    <input type="text" name="first_name">
+  
+    <label>Last Name:</label>  
+    <input type="text" name="last_name">
+  
+    <label>Email:</label>
+    <input type="email" name="email">
+  
+    <label>Message Type:</label>
+    <select name="massage_type">
+      <option value="inquiry">Inquiry</option>
+      <option value="appointment">Appointment</option>
+    </select>
+  
+    <label>Time:</label>
+    <input type="time" name="time">
+  
+    <label>Date:</label>
+    <input type="date" name="date">
+  
+    <button type="submit">Submit</button>
+  
+  </form>
+</body>
+</html>
