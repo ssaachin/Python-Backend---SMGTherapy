@@ -1,12 +1,15 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 import os
+from flask_cors import CORS
 
-app = Flask(__name__, static_folder="./dist", static_url_path='/')
+# app = Flask(__name__, static_folder="./dist", static_url_path='/')
+app = Flask(__name__)
 
+CORS(app, origins=["https://gleeful-brigadeiros-b528c5.netlify.app"])
 # Set the SQLAlchemy configuration using the DATABASE_URL environment variable
-# database_url = os.getenv("DATABASE_URL")
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
+database_url = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 # "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
 
 # Create the SQLAlchemy database object
@@ -35,7 +38,8 @@ class Feedback(db.Model):
 @app.route('/Home') 
 def index():
     # return app.send_static_file('index.html')
-    return "Sachin"
+    return "Hey"
+
 
 @app.route('/api/submit', methods=['POST'])
 def submit():
