@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="./dist")
 
 # Set the SQLAlchemy configuration using the DATABASE_URL environment variable
 database_url = os.getenv("DATABASE_URL")
@@ -32,9 +32,9 @@ class Feedback(db.Model):
 
 
 
-@app.route('/')
+@app.route('/') 
 def index():
-    return "Welcome SMG"
+    return app.send_static_file('index.html')
 
 @app.route('/api/submit', methods=['POST'])
 def submit():
