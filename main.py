@@ -32,7 +32,7 @@ class Feedback(db.Model):
 
 
 
-@app.route('/') 
+@app.route('/Home') 
 def index():
     return app.send_static_file('index.html')
 
