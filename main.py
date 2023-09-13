@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -34,24 +34,27 @@ class Feedback(db.Model):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return "Welcome SMG"
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    firstname = request.form['first_name']
-    lastname = request.form['last_name']
-    email = request.form['email']
-    massagetype = request.form['massage_type']
-    time = request.form['time']
-    date = request.form['date']
+    if request.method == 'POST':
+        data = request.get_json()
+        
+        firstname = data.get('firstName')
+        lastname = data.get('lastName')
+        email = data.get('email')
+        massagetype = data.get('massageType')
+        time = data.get('time')
+        date = data.get('date')
 
-    # Create a new Feedback instance using the correct column names
-    new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time=time, date=date)
+        # Create a new Feedback instance using the correct column names
+        new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time=time, date=date)
 
-    db.session.add(new_entry)
-    db.session.commit()
+        db.session.add(new_entry)
+        db.session.commit()
 
-    return "Saved entry!"
+        return jsonify({"message": "Saved entry!"})
 
     # Get other fields
 
