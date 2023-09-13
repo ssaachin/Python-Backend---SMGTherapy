@@ -5,8 +5,8 @@ import os
 app = Flask(__name__, static_folder="./dist", static_url_path='/')
 
 # Set the SQLAlchemy configuration using the DATABASE_URL environment variable
-# database_url = os.getenv("DATABASE_URL")
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
+database_url = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 # "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
 
 # Create the SQLAlchemy database object
