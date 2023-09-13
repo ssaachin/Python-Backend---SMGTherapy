@@ -5,8 +5,8 @@ import os
 app = Flask(__name__, static_folder="./dist", static_url_path='/')
 
 # Set the SQLAlchemy configuration using the DATABASE_URL environment variable
-database_url = os.getenv("DATABASE_URL")
-app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+# database_url = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
 # "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
 
 # Create the SQLAlchemy database object
@@ -34,7 +34,8 @@ class Feedback(db.Model):
 
 @app.route('/Home') 
 def index():
-    return app.send_static_file('index.html')
+    # return app.send_static_file('index.html')
+    return "Sachin"
 
 @app.route('/api/submit', methods=['POST'])
 def submit():
