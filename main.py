@@ -36,7 +36,7 @@ class Feedback(db.Model):
 def index():
     return "Welcome SMG"
 
-@app.route('/submit', methods=['POST'])
+@app.route('/api/submit', methods=['POST'])
 def submit():
     if request.method == 'POST':
         data = request.get_json()
