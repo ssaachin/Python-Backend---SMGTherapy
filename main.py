@@ -7,7 +7,7 @@ from flask_mail import Mail, Message
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
 app = Flask(__name__)
 
-CORS(app, origins=["https://smgtherapy.netlify.app/"])
+CORS(app, origins=["https://smgtherapy.netlify.app"])
 # Set the SQLAlchemy configuration using the DATABASE_URL environment variable
 database_url = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
