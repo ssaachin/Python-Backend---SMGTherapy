@@ -1,16 +1,26 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_cors import CORS
+from flask_mail import Mail, Message
 
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
 app = Flask(__name__)
 
-CORS(app, origins=["https://gleeful-brigadeiros-b528c5.netlify.app"])
+CORS(app, origins=["https://smgtherapy.netlify.app/"])
 # Set the SQLAlchemy configuration using the DATABASE_URL environment variable
 database_url = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 # "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
+
+app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = 'b02e5115c13194'
+app.config['MAIL_PASSWORD'] = '7059859093f09a'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+mail = Mail(app)
 
 # Create the SQLAlchemy database object
 db = SQLAlchemy(app)
@@ -58,6 +68,14 @@ def submit():
 
         db.session.add(new_entry)
         db.session.commit()
+        
+        
+        
+        msg = Message('Hello from SMG', sender='from@example.com', recipients=[email])
+        msg.body = f'''Hello {firstname} {lastname},
+                    Thank you for submitting the form. 
+                    This is a test email sent from Flask using Mailtrap!'''
+        mail.send(msg)
 
         return jsonify({"message": "Saved entry!"})
 
