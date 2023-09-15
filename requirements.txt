@@ -11,5 +11,6 @@ psycopg2==2.9.7
 psycopg2-binary==2.9.7
 Flask-CORS==4.0.0
 Flask-Mail==0.9.1
+Pyrebase4==4.7.1
 
 
