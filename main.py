@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_cors import CORS
-# import pyrebase
+import pyrebase
 # from flask_mail import Mail, Message
 
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
@@ -14,18 +14,18 @@ database_url = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 # "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
 
-# config = {
-#     "apiKey": "AIzaSyDkCfsf_cqssNgpVjXzhANxmf6iPq-XcmY",
-#     "authDomain": "smgtherapy-10277.firebaseapp.com",
-#     "projectId": "smgtherapy-10277",
-#     "storageBucket": "smgtherapy-10277.appspot.com",
-#     "messagingSenderId": "409460478726",
-#     "appId": "1:409460478726:web:efa68b8ebc4e5a89db4487",
-#     "databaseURL": ""
-# }
+config = {
+    "apiKey": "AIzaSyDkCfsf_cqssNgpVjXzhANxmf6iPq-XcmY",
+    "authDomain": "smgtherapy-10277.firebaseapp.com",
+    "projectId": "smgtherapy-10277",
+    "storageBucket": "smgtherapy-10277.appspot.com",
+    "messagingSenderId": "409460478726",
+    "appId": "1:409460478726:web:efa68b8ebc4e5a89db4487",
+    "databaseURL": ""
+}
 
-# firebase = pyrebase.initialize_app(config)
-# auth = firebase.auth()
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
 
 # Create the SQLAlchemy database object
 db = SQLAlchemy(app)
@@ -78,19 +78,19 @@ def submit():
     
     
 
-# @app.route('/api/login', methods=['POST'])
-# def login():
-#     data = request.json
-#     email = data['email']
-#     password = data['password']
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data['email']
+    password = data['password']
 
-#     try:
-#         user = auth.sign_in_with_email_and_password(email, password)
-#         # Successfully authenticated
-#         return jsonify({"message": "Login successful", "uid": user['localId']})
-#     except Exception as e:
-#         # Authentication failed
-#         return jsonify({"error": str(e)}), 401  
+    try:
+        user = auth.sign_in_with_email_and_password(email, password)
+        # Successfully authenticated
+        return jsonify({"message": "Login successful", "uid": user['localId']})
+    except Exception as e:
+        # Authentication failed
+        return jsonify({"error": str(e)}), 401  
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
