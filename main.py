@@ -76,7 +76,26 @@ def submit():
 
         return jsonify({"message": "Saved entry!"})
     
+@app.route('/clients', methods=['GET'])
+def clients():
     
+    clients = Feedback.query.all()
+    
+    client_list = []
+    
+    for client in clients:
+        client_info = {
+            "first_name": client.first_name,
+            "last_name": client.last_name,
+            "email": client.email,
+            "massage_type": client.massage_type,
+            "time": client.time,
+            "date": client.date
+        }
+        
+        client_list.append(client_info)
+        
+    return jsonify(client_list)
 
 @app.route('/login', methods=['POST'])
 def login():
