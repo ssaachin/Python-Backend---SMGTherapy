@@ -53,7 +53,7 @@ class Feedback(db.Model):
 @app.route('/Home') 
 def index():
     # return app.send_static_file('index.html')
-    return "Hey"
+    return "Heycvc"
 
 
 @app.route('/api/submit', methods=['POST'])
