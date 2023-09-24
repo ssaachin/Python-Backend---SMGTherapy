@@ -193,6 +193,15 @@ class Feedback(db.Model):
         self.time = time
         self.date = date
         
+class TimeSetter(db.Model):
+    __tablename__ = 'timesetter'
+    time = db.Column(db.String(20))
+    date = db.Column(db.String(20))
+    
+    def __init__(self, time, date):
+        self.time = time
+        self.date = date
+        
 @app.route('/Home') 
 def index():
     # return app.send_static_file('index.html')
@@ -212,6 +221,20 @@ def submit():
         date = data.get('date')
         # Create a new Feedback instance using the correct column names
         new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time=time, date=date)
+        db.session.add(new_entry)
+        db.session.commit()  
+
+        return jsonify({"message": "Saved entry!"})
+    
+@app.route('/api/TimeSet', methods=['POST'])
+def TimeSubmit():
+    if request.method == 'POST':
+        data = request.get_json()
+        
+        time = data.get('time')
+        date = data.get('date')
+        # Create a new Feedback instance using the correct column names
+        new_entry = TimeSetter(time=time, date=date)
         db.session.add(new_entry)
         db.session.commit()  
 
