@@ -194,13 +194,15 @@ class Feedback(db.Model):
         self.date = date
         
 class TimeSetter(db.Model):
-    __tablename__ = 'timesetter'
+    __tablename__ = 'time_set'
+    id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.String(20))
     date = db.Column(db.String(20))
-    
+
     def __init__(self, time, date):
         self.time = time
         self.date = date
+
         
 @app.route('/Home') 
 def index():
