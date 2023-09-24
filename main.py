@@ -164,7 +164,8 @@ from flask_login import LoginManager
 app = Flask(__name__)
 
 # Enable CORS for your front-end application
-CORS(app, origins=["https://smgtherapy.netlify.app"])
+# CORS(app, origins=["https://smgtherapy.netlify.app"])
+CORS(app, origins=["http://localhost:5173"])
 
 # SQLAlchemy configuration for PostgreSQL
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
