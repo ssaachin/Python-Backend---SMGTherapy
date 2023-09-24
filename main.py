@@ -147,6 +147,7 @@
 
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_pymongo import PyMongo
 import os
 from flask_cors import CORS
 import pyrebase
@@ -158,6 +159,16 @@ CORS(app, origins=["https://smgtherapy.netlify.app"])
 # Set the SQLAlchemy configuration using the DATABASE_URL environment variable
 database_url = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+
+MONGO_URL = os.environ.get("MONGO_URL")
+MONGO_HOST = os.environ.get("MONGOHOST") 
+MONGO_PASSWORD = os.environ.get("MONGOPASSWORD")
+MONGO_PORT = os.environ.get("MONGOPORT")
+MONGO_USER = os.environ.get("MONGOUSER")
+MONGO_COLLECTION = "test"
+
+app.config["MONGO_URI"] = "mongodb://"+ MONGO_USER +":"+ MONGO_PASSWORD +"@"+ MONGO_HOST +":"+ MONGO_PORT +"/"+ MONGO_COLLECTION
+mongo = PyMongo(app)
 
 # "postgresql://postgres:oHtTmFO0HRJ5l3EKfuRn@containers-us-west-133.railway.app:5870/railway"
 config = {
@@ -184,6 +195,7 @@ class Feedback(db.Model):
     massage_type = db.Column(db.String(200))
     time = db.Column(db.String(20))
     date = db.Column(db.String(20))
+    
     def __init__(self, first_name, last_name, email, massage_type, time, date):
         self.first_name = first_name
         self.last_name = last_name
@@ -191,6 +203,7 @@ class Feedback(db.Model):
         self.massage_type = massage_type
         self.time = time
         self.date = date
+        
 @app.route('/Home') 
 def index():
     # return app.send_static_file('index.html')
@@ -235,6 +248,24 @@ def clients():
         client_list.append(client_info)
 
     return jsonify(client_list)
+
+@app.route('/appointment', methods=['POST'])
+def create_appointment():
+    try:
+        data = request.get_json()
+        date = data.get('date')
+        time = data.get('time')
+        
+        # You can insert the date and time into your "SMG" collection here
+        # Assuming your MongoDB database is correctly configured in the app
+        mongo.db.SMG.insert_one({
+            "date": date,
+            "time": time
+        })
+
+        return jsonify({'message': 'Appointment created in MongoDB'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500  # Handle any errors that may occur
 
 @app.route('/login', methods=['POST'])
 def login():
