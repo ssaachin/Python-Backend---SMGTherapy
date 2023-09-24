@@ -241,6 +241,24 @@ def TimeSubmit():
         db.session.commit()  
 
         return jsonify({"message": "Saved entry!"})
+    
+@app.route('/DisplayAppointment', methods=['GET'])
+def Appointments():
+
+    appointments = TimeSetter.query.all()
+
+    appointment_list = []
+
+    for appointment in appointments:
+        appointment_avl = {
+            "date": appointment.date,
+            "time": appointment.time
+        }
+
+        appointment_list.append(appointment_avl)
+
+    return jsonify(appointment_list)    
+
 
 @app.route('/clients', methods=['GET'])
 def clients():
