@@ -202,10 +202,10 @@ class TimeSetter(db.Model):
     time = db.Column(db.String(20))
     date = db.Column(db.String(20))
 
-    def __init__(self, time, date, del_id):
+    def __init__(self, del_id, time, date):
+        self.del_id = del_id
         self.time = time
         self.date = date
-        self.del_id = del_id
 
         
 @app.route('/Home') 
@@ -262,6 +262,7 @@ def Appointments():
         appointment_avl = {
             "date": appointment.date,
             "time": appointment.time,
+            "del_id": appointment.del_id
         }
 
         appointment_list.append(appointment_avl)
