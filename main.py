@@ -197,7 +197,7 @@ class Feedback(db.Model):
 class TimeSetter(db.Model):
     __tablename__ = 'time_set'
     id = db.Column(db.Integer, primary_key=True)
-    del_id = db.column(db.String(20), unique = True)
+    del_id = db.column(db.String(20), unique=True)
     time = db.Column(db.String(20))
     date = db.Column(db.String(20))
 
