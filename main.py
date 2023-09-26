@@ -185,18 +185,16 @@ class Feedback(db.Model):
     email = db.Column(db.String(200))
     massage_type = db.Column(db.String(200))
     time_date = db.Column(db.String(20))
-    del_id = db.Column(db.String(20))
         
-    def __init__(self, first_name, last_name, email, massage_type, time_date, del_id):
+    def __init__(self, first_name, last_name, email, massage_type, time_date):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.massage_type = massage_type
         self.time_date = time_date
-        self.del_id = del_id
         
 class TimeSetter(db.Model):
-    __tablename__ = 'time_date'
+    __tablename__ = 'time_dates'
     id = db.Column(db.Integer, primary_key=True)
     time_date = db.Column(db.String(20))
 
