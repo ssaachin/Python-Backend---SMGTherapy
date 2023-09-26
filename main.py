@@ -151,6 +151,7 @@ import os
 from flask_cors import CORS
 import pyrebase
 import random
+import string
 # from flask_mail import Mail, Message
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
 app = Flask(__name__)
@@ -239,8 +240,8 @@ def TimeSubmit():
         time = data.get('time')
         date = data.get('date')
         
-        # Generate a 6-digit random code
-        del_id = ''.join(random.choices('0123456789', k=6))
+        # Generate a 6-character random code (letters + digits)
+        del_id = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
         
         # Create a new TimeSetter instance with the random code
         new_entry = TimeSetter(time=time, date=date, del_id=del_id)
@@ -260,7 +261,6 @@ def Appointments():
         appointment_avl = {
             "date": appointment.date,
             "time": appointment.time,
-            "del_id": appointment.del_id
         }
 
         appointment_list.append(appointment_avl)
