@@ -198,7 +198,7 @@ class Feedback(db.Model):
 class TimeSetter(db.Model):
     __tablename__ = 'time_date'
     id = db.Column(db.Integer, primary_key=True)
-    del_id = db.column(db.String(20))
+    del_id = db.Column(db.String(20))
     time = db.Column(db.String(20))
     date = db.Column(db.String(20))
 
@@ -261,8 +261,7 @@ def Appointments():
     for appointment in appointments:
         appointment_avl = {
             "date": appointment.date,
-            "time": appointment.time,
-            "del_id": appointment.del_id
+            "time": appointment.time
         }
 
         appointment_list.append(appointment_avl)
