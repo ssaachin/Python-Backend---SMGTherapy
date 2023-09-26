@@ -240,7 +240,7 @@ def TimeSubmit():
         date = data.get('date')
         
         # Generate a 6-digit random code
-        del_id = ''.join(random.choices('0123456789', k=9))
+        del_id = ''.join(random.choices('0123456789', k=6))
         
         # Create a new TimeSetter instance with the random code
         new_entry = TimeSetter(time=time, date=date, del_id=del_id)
