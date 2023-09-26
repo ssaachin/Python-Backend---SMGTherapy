@@ -150,7 +150,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_cors import CORS
 import pyrebase
-import random
+from random import choices
 import string
 # from flask_mail import Mail, Message
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
@@ -241,7 +241,8 @@ def TimeSubmit():
         date = data.get('date')
         
         # Generate a 6-character random code (letters + digits)
-        del_id = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+        characters = string.ascii_letters + string.digits
+        del_id = ''.join(choices(characters, k=6))
         
         # Create a new TimeSetter instance with the random code
         new_entry = TimeSetter(time=time, date=date, del_id=del_id)
