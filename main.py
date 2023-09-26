@@ -178,7 +178,7 @@ auth = firebase.auth()
 db = SQLAlchemy(app)
 
 class Feedback(db.Model):
-    __tablename__ = 'smg'
+    __tablename__ = 'smg_customer'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(200))
     last_name = db.Column(db.String(200))
