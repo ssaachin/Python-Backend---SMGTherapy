@@ -150,6 +150,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_cors import CORS
 import pyrebase
+import random
 # from flask_mail import Mail, Message
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
 app = Flask(__name__)
@@ -196,12 +197,14 @@ class Feedback(db.Model):
 class TimeSetter(db.Model):
     __tablename__ = 'time_set'
     id = db.Column(db.Integer, primary_key=True)
+    del_id = db.column(db.String(20), unique = True)
     time = db.Column(db.String(20))
     date = db.Column(db.String(20))
 
-    def __init__(self, time, date):
+    def __init__(self, time, date, del_id):
         self.time = time
         self.date = date
+        self.del_id = del_id
 
         
 @app.route('/Home') 
@@ -235,12 +238,16 @@ def TimeSubmit():
         
         time = data.get('time')
         date = data.get('date')
-        # Create a new Feedback instance using the correct column names
-        new_entry = TimeSetter(time=time, date=date)
+        
+        # Generate a 6-digit random code
+        del_id = ''.join(random.choices('0123456789', k=9))
+        
+        # Create a new TimeSetter instance with the random code
+        new_entry = TimeSetter(time=time, date=date, del_id=del_id)
         db.session.add(new_entry)
         db.session.commit()  
 
-        return jsonify({"message": "Saved entry!"})
+        return jsonify({"message": "Saved entry with del_id: " + del_id})
     
 @app.route('/DisplayAppointment', methods=['GET'])
 def Appointments():
@@ -252,7 +259,8 @@ def Appointments():
     for appointment in appointments:
         appointment_avl = {
             "date": appointment.date,
-            "time": appointment.time
+            "time": appointment.time,
+            "del_id": appointment.del_id
         }
 
         appointment_list.append(appointment_avl)
