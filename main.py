@@ -178,34 +178,30 @@ auth = firebase.auth()
 db = SQLAlchemy(app)
 
 class Feedback(db.Model):
-    __tablename__ = 'smg_customer'
+    __tablename__ = 'smg'
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(200), unique=True)
+    first_name = db.Column(db.String(200))
     last_name = db.Column(db.String(200))
     email = db.Column(db.String(200))
     massage_type = db.Column(db.String(200))
-    time = db.Column(db.String(20))
-    date = db.Column(db.String(20))
-    
-    def __init__(self, first_name, last_name, email, massage_type, time, date):
+    time_date = db.Column(db.String(20))
+    del_id = db.Column(db.String(20))
+        
+    def __init__(self, first_name, last_name, email, massage_type, time_date, del_id):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.massage_type = massage_type
-        self.time = time
-        self.date = date
+        self.time_date = time_date
+        self.del_id = del_id
         
 class TimeSetter(db.Model):
     __tablename__ = 'time_date'
     id = db.Column(db.Integer, primary_key=True)
-    del_id = db.Column(db.String(20))
-    time = db.Column(db.String(20))
-    date = db.Column(db.String(20))
+    time_date = db.Column(db.String(20))
 
-    def __init__(self, del_id, time, date):
-        self.del_id = del_id
-        self.time = time
-        self.date = date
+    def __init__(self, time_date):
+        self.time_date = time_date
 
         
 @app.route('/Home') 
@@ -240,16 +236,15 @@ def TimeSubmit():
         time = data.get('time')
         date = data.get('date')
         
-        # Generate a 6-character random code (letters + digits)
-        characters = string.ascii_letters + string.digits
-        del_id = ''.join(choices(characters, k=6))
+        time_date = f"{date} {time}"
+        
         
         # Create a new TimeSetter instance with the random code
-        new_entry = TimeSetter(time=time, date=date, del_id=del_id)
+        new_entry = TimeSetter(time_date=time_date)
         db.session.add(new_entry)
         db.session.commit()  
 
-        return jsonify({"message": "Saved entry with del_id: " + del_id})
+        return jsonify({"message"})
     
 @app.route('/DisplayAppointment', methods=['GET'])
 def Appointments():
@@ -260,9 +255,7 @@ def Appointments():
 
     for appointment in appointments:
         appointment_avl = {
-            "date": appointment.date,
-            "time": appointment.time,
-            "del_id": appointment.del_id
+            "time_date": appointment.time_date,
         }
 
         appointment_list.append(appointment_avl)
