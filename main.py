@@ -184,14 +184,16 @@ class Feedback(db.Model):
     last_name = db.Column(db.String(200))
     email = db.Column(db.String(200))
     massage_type = db.Column(db.String(200))
-    time_date = db.Column(db.String(20))
+    date = db.Column(db.String(20))
+    time = db.Column(db.String(20))
         
-    def __init__(self, first_name, last_name, email, massage_type, time_date):
+    def __init__(self, first_name, last_name, email, massage_type, time, date):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.massage_type = massage_type
-        self.time_date = time_date
+        self.time = time
+        self.date = date
         
 class TimeSetter(db.Model):
     __tablename__ = 'time_dates'
@@ -242,7 +244,7 @@ def TimeSubmit():
         db.session.add(new_entry)
         db.session.commit()  
 
-        return jsonify({"message"})
+        return jsonify({"message": "HI"})
     
 @app.route('/DisplayAppointment', methods=['GET'])
 def Appointments():
