@@ -176,22 +176,22 @@ auth = firebase.auth()
 db = SQLAlchemy(app)
 
 class Feedback(db.Model):
-    __tablename__ = 'smg_customer'
+    __tablename__ = 'smg'
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(200), unique=True)
+    first_name = db.Column(db.String(200))
     last_name = db.Column(db.String(200))
     email = db.Column(db.String(200))
     massage_type = db.Column(db.String(200))
-    time = db.Column(db.String(20))
-    date = db.Column(db.String(20))
+    time_date = db.Column(db.String(30))
+    del_id = db.column(db.string(20))
     
-    def __init__(self, first_name, last_name, email, massage_type, time, date):
+    def __init__(self, first_name, last_name, email, massage_type, time_date, del_id):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.massage_type = massage_type
-        self.time = time
-        self.date = date
+        self.time_date = time_date
+        self.del_id = del_id
         
 class TimeSetter(db.Model):
     __tablename__ = 'time_set'
@@ -219,10 +219,10 @@ def submit():
         lastname = data.get('lastName')
         email = data.get('email')
         massagetype = data.get('massageType')
-        time = data.get('time')
-        date = data.get('date')
+        time_date = data.get('timeDate')
+        del_id= data.get('delId')
         # Create a new Feedback instance using the correct column names
-        new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time=time, date=date)
+        new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time_date=time_date, del_id=del_id)
         db.session.add(new_entry)
         db.session.commit()  
 
@@ -251,6 +251,7 @@ def Appointments():
 
     for appointment in appointments:
         appointment_avl = {
+            "id": appointment.id,
             "date": appointment.date,
             "time": appointment.time
         }
@@ -273,8 +274,8 @@ def clients():
             "last_name": client.last_name,
             "email": client.email,
             "massage_type": client.massage_type,
-            "time": client.time,
-            "date": client.date
+            "time_date": client.time_date,
+            "del_id": client.del_id
         }
 
         client_list.append(client_info)
