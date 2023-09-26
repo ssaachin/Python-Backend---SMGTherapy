@@ -150,7 +150,6 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_cors import CORS
 import pyrebase
-import random
 # from flask_mail import Mail, Message
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
 app = Flask(__name__)
@@ -177,40 +176,38 @@ auth = firebase.auth()
 db = SQLAlchemy(app)
 
 class Feedback(db.Model):
-    __tablename__ = 'smg'
+    __tablename__ = 'smg_customer'
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(200))
+    first_name = db.Column(db.String(200), unique=True)
     last_name = db.Column(db.String(200))
     email = db.Column(db.String(200))
     massage_type = db.Column(db.String(200))
-    time_date = db.Column(db.String(30))
-    del_id = db.column(db.string(20))
+    time = db.Column(db.String(20))
+    date = db.Column(db.String(20))
     
-    def __init__(self, first_name, last_name, email, massage_type, time_date, del_id):
+    def __init__(self, first_name, last_name, email, massage_type, time, date):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.massage_type = massage_type
-        self.time_date = time_date
-        self.del_id = del_id
+        self.time = time
+        self.date = date
         
 class TimeSetter(db.Model):
     __tablename__ = 'time_set'
     id = db.Column(db.Integer, primary_key=True)
-    del_id = db.column(db.String(20), unique = True)
     time = db.Column(db.String(20))
     date = db.Column(db.String(20))
 
-    def __init__(self, time, date, del_id):
+    def __init__(self, time, date):
         self.time = time
         self.date = date
-        self.del_id = del_id
 
         
 @app.route('/Home') 
 def index():
     # return app.send_static_file('index.html')
-    return "Heya"
+    return "Hey"
 
 
 @app.route('/api/submit', methods=['POST'])
@@ -222,10 +219,10 @@ def submit():
         lastname = data.get('lastName')
         email = data.get('email')
         massagetype = data.get('massageType')
-        time_date = data.get('timeDate')
-        del_id= data.get('delId')
+        time = data.get('time')
+        date = data.get('date')
         # Create a new Feedback instance using the correct column names
-        new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time_date=time_date, del_id=del_id)
+        new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time=time, date=date)
         db.session.add(new_entry)
         db.session.commit()  
 
@@ -238,34 +235,29 @@ def TimeSubmit():
         
         time = data.get('time')
         date = data.get('date')
-        
-        # Generate a 6-digit random code
-        del_id = ''.join(random.choices('0123456789', k=9))
-        
-        # Create a new TimeSetter instance with the random code
-        new_entry = TimeSetter(time=time, date=date, del_id=del_id)
+        # Create a new Feedback instance using the correct column names
+        new_entry = TimeSetter(time=time, date=date)
         db.session.add(new_entry)
         db.session.commit()  
 
-        return jsonify({"message": "Saved entry with del_id: " + del_id})
+        return jsonify({"message": "Saved entry!"})
     
 @app.route('/DisplayAppointment', methods=['GET'])
 def Appointments():
+
     appointments = TimeSetter.query.all()
-    
+
     appointment_list = []
 
     for appointment in appointments:
         appointment_avl = {
-            "id": appointment.id,
             "date": appointment.date,
             "time": appointment.time
         }
 
         appointment_list.append(appointment_avl)
 
-    return jsonify(appointment_list)
-
+    return jsonify(appointment_list)    
 
 
 @app.route('/clients', methods=['GET'])
@@ -281,8 +273,8 @@ def clients():
             "last_name": client.last_name,
             "email": client.email,
             "massage_type": client.massage_type,
-            "time_date": client.time_date,
-            "del_id": client.del_id
+            "time": client.time,
+            "date": client.date
         }
 
         client_list.append(client_info)
