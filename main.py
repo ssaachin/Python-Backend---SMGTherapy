@@ -218,12 +218,22 @@ def submit():
         email = data.get('email')
         massagetype = data.get('massageType')
         time_date = data.get('time_date')
+        
         # Create a new Feedback instance using the correct column names
         new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time_date=time_date)
         db.session.add(new_entry)
         db.session.commit()  
 
-        return jsonify({"message": "Saved entry!"})
+        # Check if the new record exists in the 'time_dates' table
+        matching_record = TimeSetter.query.filter_by(time_date=time_date).first()
+        if matching_record:
+            # Delete the matching record from the 'time_dates' table
+            db.session.delete(matching_record)
+            db.session.commit()
+            return jsonify({"message": "Saved entry and deleted matching record from 'time_dates'!"})
+        else:
+            return jsonify({"message": "Saved entry but no matching record found in 'time_dates'."})
+
     
 @app.route('/DisplayAppointment', methods=['GET', 'POST', 'DELETE'])
 def Appointments():
@@ -259,18 +269,6 @@ def Appointments():
 
         return jsonify(appointment_list)
 
-    if request.method == 'DELETE':
-        data = request.get_json()
-        time_date_to_delete = data.get('time_date')
-
-        # Delete the corresponding time_date from the time_dates table
-        matching_time_date = TimeSetter.query.filter_by(time_date=time_date_to_delete).first()
-        if matching_time_date:
-            db.session.delete(matching_time_date)
-            db.session.commit()
-            return jsonify({"message": f"Deleted time_date"})
-        else:
-            return jsonify({"message": "No matching time_date found"})
 
 
 @app.route('/clients', methods=['GET'])
