@@ -225,25 +225,7 @@ def submit():
 
         return jsonify({"message": "Saved entry!"})
     
-# @app.route('/api/TimeSet', methods=['POST'])
-# def TimeSubmit():
-#     if request.method == 'POST':
-#         data = request.get_json()
-        
-#         time = data.get('time')
-#         date = data.get('date')
-        
-#         time_date = f"{date} {time}"
-        
-        
-#         # Create a new TimeSetter instance with the random code
-#         new_entry = TimeSetter(time_date=time_date)
-#         db.session.add(new_entry)
-#         db.session.commit()  
-
-#         return jsonify({"message": "HI"})
-    
-@app.route('/DisplayAppointment', methods=['GET', 'POST'])
+@app.route('/DisplayAppointment', methods=['GET', 'POST', 'DELETE'])
 def Appointments():
     
     if request.method == 'POST':
@@ -275,7 +257,20 @@ def Appointments():
 
             appointment_list.append(appointment_avl)
 
-        return jsonify(appointment_list)    
+        return jsonify(appointment_list)
+
+    if request.method == 'DELETE':
+        data = request.get_json()
+        time_date_to_delete = data.get('time_date')
+
+        # Delete the corresponding time_date from the time_dates table
+        matching_time_date = TimeSetter.query.filter_by(time_date=time_date_to_delete).first()
+        if matching_time_date:
+            db.session.delete(matching_time_date)
+            db.session.commit()
+            return jsonify({"message": f"Deleted time_date"})
+        else:
+            return jsonify({"message": "No matching time_date found"})
 
 
 @app.route('/clients', methods=['GET'])
