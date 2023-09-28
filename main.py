@@ -225,39 +225,57 @@ def submit():
 
         return jsonify({"message": "Saved entry!"})
     
-@app.route('/api/TimeSet', methods=['POST'])
-def TimeSubmit():
+# @app.route('/api/TimeSet', methods=['POST'])
+# def TimeSubmit():
+#     if request.method == 'POST':
+#         data = request.get_json()
+        
+#         time = data.get('time')
+#         date = data.get('date')
+        
+#         time_date = f"{date} {time}"
+        
+        
+#         # Create a new TimeSetter instance with the random code
+#         new_entry = TimeSetter(time_date=time_date)
+#         db.session.add(new_entry)
+#         db.session.commit()  
+
+#         return jsonify({"message": "HI"})
+    
+@app.route('/DisplayAppointment', methods=['GET', 'POST'])
+def Appointments():
+    
     if request.method == 'POST':
         data = request.get_json()
-        
+            
         time = data.get('time')
         date = data.get('date')
-        
+            
         time_date = f"{date} {time}"
-        
-        
+            
+            
         # Create a new TimeSetter instance with the random code
         new_entry = TimeSetter(time_date=time_date)
         db.session.add(new_entry)
         db.session.commit()  
 
         return jsonify({"message": "HI"})
-    
-@app.route('/DisplayAppointment', methods=['GET'])
-def Appointments():
+        
+    if request.method == 'GET':
 
-    appointments = TimeSetter.query.all()
+        appointments = TimeSetter.query.all()
 
-    appointment_list = []
+        appointment_list = []
 
-    for appointment in appointments:
-        appointment_avl = {
-            "time_date": appointment.time_date,
-        }
+        for appointment in appointments:
+            appointment_avl = {
+                "time_date": appointment.time_date,
+            }
 
-        appointment_list.append(appointment_avl)
+            appointment_list.append(appointment_avl)
 
-    return jsonify(appointment_list)    
+        return jsonify(appointment_list)    
 
 
 @app.route('/clients', methods=['GET'])
