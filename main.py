@@ -184,16 +184,14 @@ class Feedback(db.Model):
     last_name = db.Column(db.String(200))
     email = db.Column(db.String(200))
     massage_type = db.Column(db.String(200))
-    date = db.Column(db.String(20))
-    time = db.Column(db.String(20))
+    time_date = db.Column(db.String(20))
         
-    def __init__(self, first_name, last_name, email, massage_type, time, date):
+    def __init__(self, first_name, last_name, email, massage_type, time_date):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.massage_type = massage_type
-        self.time = time
-        self.date = date
+        self.time_date = time_date
         
 class TimeSetter(db.Model):
     __tablename__ = 'time_dates'
@@ -219,10 +217,9 @@ def submit():
         lastname = data.get('lastName')
         email = data.get('email')
         massagetype = data.get('massageType')
-        time = data.get('time')
-        date = data.get('date')
+        time_date = data.get('time_date')
         # Create a new Feedback instance using the correct column names
-        new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time=time, date=date)
+        new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time_date=time_date)
         db.session.add(new_entry)
         db.session.commit()  
 
