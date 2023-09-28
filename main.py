@@ -273,8 +273,7 @@ def clients():
             "last_name": client.last_name,
             "email": client.email,
             "massage_type": client.massage_type,
-            "time": client.time,
-            "date": client.date
+            "time_date": client.time_date
         }
 
         client_list.append(client_info)
