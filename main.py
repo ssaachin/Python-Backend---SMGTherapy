@@ -98,13 +98,8 @@ def Appointments():
         time = data.get('time')
         date = data.get('date')
         
-        # Convert the date string to a datetime object
-        date_obj = datetime.strptime(date, '%d/%m/%Y')
         
-        # Extract the month from the datetime object
-        month = date_obj.strftime('%B')
-        
-        time_date = f"{month} {time}"
+        time_date = f"{date} \nTime: {time}"
         
         # Create a new TimeSetter instance with the modified time_date
         new_entry = TimeSetter(time_date=time_date)
