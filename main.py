@@ -111,7 +111,7 @@ def Appointments():
         db.session.add(new_entry)
         db.session.commit()
     
-    return jsonify({"message": "HI"})
+        return jsonify({"message": "HI"})
         
     if request.method == 'GET':
 
