@@ -49,7 +49,7 @@ class Feedback(db.Model):
 class TimeSetter(db.Model):
     __tablename__ = 'time_dates'
     id = db.Column(db.Integer, primary_key=True)
-    time_date = db.Column(db.String(20))
+    time_date = db.Column(db.String(30))
 
     def __init__(self, time_date):
         self.time_date = time_date
@@ -88,7 +88,7 @@ def submit():
             return jsonify({"message": "Saved entry but no matching record found in 'time_dates'."})
 
     
-@app.route('/DisplayAppointment', methods=['GET', 'POST', 'DELETE'])
+@app.route('/DisplayAppointment', methods=['GET', 'POST'])
 def Appointments():
     
     if request.method == 'POST':
@@ -98,7 +98,7 @@ def Appointments():
         date = data.get('date')
         
         
-        time_date = f"{date} HI{time}"
+        time_date = f"{date} Time: {time}"
         
         # Create a new TimeSetter instance with the modified time_date
         new_entry = TimeSetter(time_date=time_date)
