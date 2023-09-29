@@ -98,7 +98,7 @@ def Appointments():
         date = data.get('date')
         
         
-        time_date = f"{date} {time}"
+        time_date = f"{date} HI{time}"
         
         # Create a new TimeSetter instance with the modified time_date
         new_entry = TimeSetter(time_date=time_date)
