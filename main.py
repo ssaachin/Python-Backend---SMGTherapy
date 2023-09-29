@@ -47,9 +47,9 @@ class Feedback(db.Model):
         self.time_date = time_date
         
 class TimeSetter(db.Model):
-    __tablename__ = 'time_setter'
+    __tablename__ = 'time_setting'
     id = db.Column(db.Integer, primary_key=True)
-    time_date = db.Column(db.String(30))
+    time_date = db.Column(db.String(40))
 
     def __init__(self, time_date):
         self.time_date = time_date
