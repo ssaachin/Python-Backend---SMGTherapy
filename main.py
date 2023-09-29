@@ -5,6 +5,7 @@ from flask_cors import CORS
 import pyrebase
 from random import choices
 import string
+from datetime import datetime
 # from flask_mail import Mail, Message
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
 app = Flask(__name__)
@@ -93,19 +94,24 @@ def Appointments():
     
     if request.method == 'POST':
         data = request.get_json()
-            
+                
         time = data.get('time')
         date = data.get('date')
-            
-        time_date = f"{date} {time}"
-            
-            
-        # Create a new TimeSetter instance with the random code
+        
+        # Convert the date string to a datetime object
+        date_obj = datetime.strptime(date, '%d/%m/%Y')
+        
+        # Extract the month from the datetime object
+        month = date_obj.strftime('%B')
+        
+        time_date = f"{month} {time}"
+        
+        # Create a new TimeSetter instance with the modified time_date
         new_entry = TimeSetter(time_date=time_date)
         db.session.add(new_entry)
-        db.session.commit()  
-
-        return jsonify({"message": "HI"})
+        db.session.commit()
+    
+    return jsonify({"message": "HI"})
         
     if request.method == 'GET':
 
