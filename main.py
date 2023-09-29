@@ -140,6 +140,23 @@ def delete_appointment(appointment_id):
                 # Return a 404 status code and a message if the appointment is not found
                 return jsonify({"message": "Appointment not found", "status_code": 404}), 404
 
+@app.route('/DeleteClient/<int:appointment_id>', methods=['DELETE'])
+def delete_client(appointment_id):
+    
+        if request.method == 'DELETE':
+
+            # Check if the appointment with the given ID exists
+            appointment = Feedback.query.filter_by(id=appointment_id).first()
+            if appointment:
+                # Delete the appointment and commit the changes
+                db.session.delete(appointment)
+                db.session.commit()
+                return jsonify({"message": "Appointment deleted successfully", "status_code": 200}), 200
+            else:
+                # Return a 404 status code and a message if the appointment is not found
+                return jsonify({"message": "Appointment not found", "status_code": 404}), 404
+
+
 @app.route('/clients', methods=['GET'])
 def clients():
 
@@ -149,6 +166,7 @@ def clients():
 
     for client in clients:
         client_info = {
+            "id": client.id,
             "first_name": client.first_name,
             "last_name": client.last_name,
             "email": client.email,
