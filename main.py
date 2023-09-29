@@ -47,7 +47,7 @@ class Feedback(db.Model):
         self.time_date = time_date
         
 class TimeSetter(db.Model):
-    __tablename__ = 'time_dates'
+    __tablename__ = 'time_setter'
     id = db.Column(db.Integer, primary_key=True)
     time_date = db.Column(db.String(30))
 
@@ -98,7 +98,7 @@ def Appointments():
         date = data.get('date')
         
         
-        time_date = f"Date/ {date} Time/ {time}"
+        time_date = f"Date - {date} Time - {time}"
         
         # Create a new TimeSetter instance with the modified time_date
         new_entry = TimeSetter(time_date=time_date)
