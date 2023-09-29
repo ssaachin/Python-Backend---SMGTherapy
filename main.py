@@ -5,7 +5,6 @@ from flask_cors import CORS
 import pyrebase
 from random import choices
 import string
-from datetime import datetime
 # from flask_mail import Mail, Message
 # app = Flask(__name__, static_folder="./dist", static_url_path='/')
 app = Flask(__name__)
@@ -99,7 +98,7 @@ def Appointments():
         date = data.get('date')
         
         
-        time_date = f"{date} \nTime: {time}"
+        time_date = f"{date} Time: {time}"
         
         # Create a new TimeSetter instance with the modified time_date
         new_entry = TimeSetter(time_date=time_date)
