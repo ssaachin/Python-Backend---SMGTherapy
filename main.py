@@ -124,13 +124,13 @@ def Appointments():
         return jsonify(appointment_list)
 
     
-@app.route('/DeleteAppointment/<int:appointment_time_date>', methods=['DELETE'])
-def delete_appointment(appointment_time_date):
+@app.route('/DeleteAppointment/<int:appointment_id>', methods=['DELETE'])
+def delete_appointment(appointment_id):
     
         if request.method == 'DELETE':
 
             # Check if the appointment with the given ID exists
-            appointment = TimeSetter.query.filter_by(time_date=appointment_time_date).first()
+            appointment = TimeSetter.query.filter_by(id=appointment_id).first()
             if appointment:
                 # Delete the appointment and commit the changes
                 db.session.delete(appointment)
