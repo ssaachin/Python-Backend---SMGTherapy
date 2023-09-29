@@ -123,7 +123,23 @@ def Appointments():
 
         return jsonify(appointment_list)
 
-
+    
+@app.route('/DeleteAppointment/<int:appointment_id>', methods=['DELETE'])
+def delete_appointment(appointment_id):
+    try:
+        # Check if the appointment with the given ID exists
+        appointment = TimeSetter.query.get(appointment_id)
+        if appointment:
+            # Delete the appointment and commit the changes
+            db.session.delete(appointment)
+            db.session.commit()
+            return jsonify({"message": "Appointment deleted successfully", "status_code": 200}), 200
+        else:
+            # Return a 404 status code and a message if the appointment is not found
+            return jsonify({"message": "Appointment not found", "status_code": 404}), 404
+    except Exception as e:
+        # Handle exceptions and return a 500 status code with an error message
+        return jsonify({"message": "Error deleting appointment", "error": str(e), "status_code": 500}), 500
 
 @app.route('/clients', methods=['GET'])
 def clients():
