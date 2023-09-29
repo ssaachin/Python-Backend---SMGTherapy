@@ -120,7 +120,9 @@ def Appointments():
         for appointment in appointments:
             appointment_avl = {
                 "id": appointment.id,
-                "time_date": appointment.time_date
+                "time_date": appointment.time_date,
+                "time": appointment.time,
+                "date": appointment.date
             }
 
             appointment_list.append(appointment_avl)
