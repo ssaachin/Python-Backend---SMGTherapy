@@ -47,12 +47,16 @@ class Feedback(db.Model):
         self.time_date = time_date
         
 class TimeSetter(db.Model):
-    __tablename__ = 'time_setting'
+    __tablename__ = 'times_avl'
     id = db.Column(db.Integer, primary_key=True)
     time_date = db.Column(db.String(40))
+    time = db.Column(db.String(20))
+    date = db.Column(db.String(20))
 
-    def __init__(self, time_date):
+    def __init__(self, time_date, time, date):
         self.time_date = time_date
+        self.time = time
+        self.date = date
 
         
 @app.route('/Home') 
@@ -98,10 +102,10 @@ def Appointments():
         date = data.get('date')
         
         
-        time_date = f"Time - {time} / Date - {date}"
+        time_date = f"{time} {date}"
         
         # Create a new TimeSetter instance with the modified time_date
-        new_entry = TimeSetter(time_date=time_date)
+        new_entry = TimeSetter(time_date=time_date, time=time, date=date)
         db.session.add(new_entry)
         db.session.commit()
     
