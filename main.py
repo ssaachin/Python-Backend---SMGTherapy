@@ -45,7 +45,6 @@ class Feedback(db.Model):
         self.email = email
         self.massage_type = massage_type
         self.time_date = time_date
-
         
 class TimeSetter(db.Model):
     __tablename__ = 'times_avl'
@@ -79,9 +78,6 @@ def submit():
         
         # Create a new Feedback instance using the correct column names
         new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time_date=time_date)
-        
-        # Set the email_sent property to False for the new entry
-        
         db.session.add(new_entry)
         db.session.commit()  
 
@@ -95,9 +91,8 @@ def submit():
         else:
             return jsonify({"message": "Saved entry but no matching record found in 'time_dates'."})
 
-
     
-@app.route('/DisplayAppointment', methods=['GET', 'POST', 'PUT'])
+@app.route('/DisplayAppointment', methods=['GET', 'POST'])
 def Appointments():
     
     if request.method == 'POST':
@@ -133,28 +128,6 @@ def Appointments():
             appointment_list.append(appointment_avl)
 
         return jsonify(appointment_list)
-
-
-@app.route('/UpdateClientSentEmail/<int:client_id>', methods=['PUT'])
-def update_client_sent_email(client_id):
-    if request.method == 'PUT':
-        data = request.get_json()
-        sent_email = data.get('sent_email')
-
-        # Check if the client with the given ID exists
-        client = Feedback.query.filter_by(id=client_id).first()
-        if client:
-            # Update the sent_email property and commit the changes
-            client.email_sent = sent_email  # Update the property name to email_sent
-            db.session.commit()
-            return jsonify({"message": "Client email_sent updated successfully", "status_code": 200}), 200
-        else:
-            # Return a 404 status code and a message if the client is not found
-            return jsonify({"message": "Client not found", "status_code": 404}), 404
-
-        
-
-
 
     
 @app.route('/DeleteAppointment/<int:appointment_id>', methods=['DELETE'])
@@ -192,6 +165,7 @@ def delete_client(appointment_id):
 
 @app.route('/clients', methods=['GET'])
 def clients():
+
     clients = Feedback.query.all()
 
     client_list = []
@@ -203,14 +177,12 @@ def clients():
             "last_name": client.last_name,
             "email": client.email,
             "massage_type": client.massage_type,
-            "time_date": client.time_date,
-            "email_sent": client.email_sent  # Include the email_sent property
+            "time_date": client.time_date
         }
 
         client_list.append(client_info)
 
     return jsonify(client_list)
-
 
 @app.route('/login', methods=['POST'])
 def login():
