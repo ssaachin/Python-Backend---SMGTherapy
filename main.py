@@ -92,7 +92,7 @@ def submit():
             return jsonify({"message": "Saved entry but no matching record found in 'time_dates'."})
 
     
-@app.route('/DisplayAppointment', methods=['GET', 'POST'])
+@app.route('/DisplayAppointment', methods=['GET', 'POST', 'PUT'])
 def Appointments():
     
     if request.method == 'POST':
@@ -128,6 +128,25 @@ def Appointments():
             appointment_list.append(appointment_avl)
 
         return jsonify(appointment_list)
+
+
+@app.route('/UpdateClientSentEmail/<int:client_id>', methods=['PUT'])
+def update_client_sent_email(client_id):
+    if request.method == 'PUT':
+        data = request.get_json()
+        sent_email = data.get('sent_email')
+
+        # Check if the client with the given ID exists
+        client = Feedback.query.filter_by(id=client_id).first()
+        if client:
+            # Update the sent_email property and commit the changes
+            client.sent_email = sent_email
+            db.session.commit()
+            return jsonify({"message": "Client sent_email updated successfully", "status_code": 200}), 200
+        else:
+            # Return a 404 status code and a message if the client is not found
+            return jsonify({"message": "Client not found", "status_code": 404}), 404
+
 
     
 @app.route('/DeleteAppointment/<int:appointment_id>', methods=['DELETE'])
