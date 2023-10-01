@@ -38,6 +38,7 @@ class Feedback(db.Model):
     email = db.Column(db.String(200))
     massage_type = db.Column(db.String(200))
     time_date = db.Column(db.String(20))
+    email_sent = db.Column(db.Boolean, default=False)  # Add the email_sent column
         
     def __init__(self, first_name, last_name, email, massage_type, time_date):
         self.first_name = first_name
@@ -45,6 +46,8 @@ class Feedback(db.Model):
         self.email = email
         self.massage_type = massage_type
         self.time_date = time_date
+        self.email_sent = False  # Initialize email_sent to False by default
+
         
 class TimeSetter(db.Model):
     __tablename__ = 'times_avl'
@@ -78,6 +81,10 @@ def submit():
         
         # Create a new Feedback instance using the correct column names
         new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time_date=time_date)
+        
+        # Set the email_sent property to False for the new entry
+        new_entry.email_sent = False
+        
         db.session.add(new_entry)
         db.session.commit()  
 
@@ -90,6 +97,7 @@ def submit():
             return jsonify({"message": "Saved entry and deleted matching record from 'time_dates'!"})
         else:
             return jsonify({"message": "Saved entry but no matching record found in 'time_dates'."})
+
 
     
 @app.route('/DisplayAppointment', methods=['GET', 'POST', 'PUT'])
@@ -184,7 +192,6 @@ def delete_client(appointment_id):
 
 @app.route('/clients', methods=['GET'])
 def clients():
-
     clients = Feedback.query.all()
 
     client_list = []
@@ -196,12 +203,14 @@ def clients():
             "last_name": client.last_name,
             "email": client.email,
             "massage_type": client.massage_type,
-            "time_date": client.time_date
+            "time_date": client.time_date,
+            "email_sent": client.email_sent  # Include the email_sent property
         }
 
         client_list.append(client_info)
 
     return jsonify(client_list)
+
 
 @app.route('/login', methods=['POST'])
 def login():
