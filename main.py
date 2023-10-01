@@ -148,12 +148,15 @@ def update_client_sent_email(client_id):
         client = Feedback.query.filter_by(id=client_id).first()
         if client:
             # Update the sent_email property and commit the changes
-            client.sent_email = sent_email
+            client.email_sent = sent_email  # Update the property name to email_sent
             db.session.commit()
-            return jsonify({"message": "Client sent_email updated successfully", "status_code": 200}), 200
+            return jsonify({"message": "Client email_sent updated successfully", "status_code": 200}), 200
         else:
             # Return a 404 status code and a message if the client is not found
             return jsonify({"message": "Client not found", "status_code": 404}), 404
+
+        
+
 
 
     
