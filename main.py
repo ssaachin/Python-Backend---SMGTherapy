@@ -38,7 +38,6 @@ class Feedback(db.Model):
     email = db.Column(db.String(200))
     massage_type = db.Column(db.String(200))
     time_date = db.Column(db.String(20))
-    email_sent = db.Column(db.Boolean, default=False)  # Add the email_sent column
         
     def __init__(self, first_name, last_name, email, massage_type, time_date):
         self.first_name = first_name
@@ -46,7 +45,6 @@ class Feedback(db.Model):
         self.email = email
         self.massage_type = massage_type
         self.time_date = time_date
-        self.email_sent = False  # Initialize email_sent to False by default
 
         
 class TimeSetter(db.Model):
@@ -83,7 +81,6 @@ def submit():
         new_entry = Feedback(first_name=firstname, last_name=lastname, email=email, massage_type=massagetype, time_date=time_date)
         
         # Set the email_sent property to False for the new entry
-        new_entry.email_sent = False
         
         db.session.add(new_entry)
         db.session.commit()  
