@@ -62,7 +62,7 @@ class TimeSetter(db.Model):
 @app.route('/Home') 
 def index():
     # return app.send_static_file('index.html')
-    return "Hey"
+    return "Hey123"
 
 
 @app.route('/api/submit', methods=['POST'])
